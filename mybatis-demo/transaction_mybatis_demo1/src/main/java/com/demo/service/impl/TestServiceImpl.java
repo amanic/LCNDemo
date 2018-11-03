@@ -1,0 +1,56 @@
+package com.demo.service.impl;
+
+import com.demo.dao.TestDao;
+import com.demo.entity.Test;
+import com.demo.service.Test2Service;
+import com.demo.service.TestService;
+import com.codingapi.tx.annotation.TxTransaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * Created by lorne on 2017/6/7.
+ */
+@Service
+public class TestServiceImpl implements TestService {
+
+
+    @Autowired
+    private TestDao testDao;
+
+    @Autowired
+    private Test2Service test2Service;
+
+
+    @Override
+//    @TxTransaction(isStart = true)
+    @Transactional
+    public String hello(Integer i) {
+
+
+        String res1 =  test2Service.test();
+
+        String name = "consumer";
+        Test test = new Test();
+        test.setName(name);
+        testDao.save(test);
+
+        int v = 100/i;
+
+        return res1;
+    }
+
+
+    @Override
+    @Transactional
+    public String hello1(Integer i) {
+        String name = "consumer";
+        Test test = new Test();
+        test.setName(name);
+        testDao.save(test);
+        int v = 100/i;
+        return "---";
+    }
+
+}
